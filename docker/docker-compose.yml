@@ -1,0 +1,48 @@
+services:
+    app:
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        container_name: testMaker-app
+        restart: always
+        working_dir: /var/www/testmaker
+        ports:
+            - 5173:5173
+        depends_on:
+            - db
+        volumes:
+            - ../src/testmaker:/var/www/testmaker
+        networks:
+            - laravel
+    nginx:
+        image: nginx:1.29-alpine
+        container_name: testMaker-nginx
+        restart: always
+        ports:
+            - 8000:80
+        volumes:
+            - ../src/testmaker:/var/www/testmaker
+            - ./nginx:/etc/nginx/conf.d
+        networks:
+            - laravel
+        depends_on:
+            - app
+    db:
+        image: mysql:9.4
+        container_name: laravel_db
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+            MYSQL_DATABASE: "${MYSQL_DATABASE}"
+            MYSQL_USER: "${MYSQL_USER}"
+            MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+        volumes:
+            - db_data:/var/lib/mysql
+        networks:
+            - laravel
+
+volumes:
+    db_data:
+
+networks:
+    laravel:

@@ -1,0 +1,25 @@
+reminder :
++-? equals to needs further testing. May be improved in future
+
+bugs:
+-bug with auto insert.
+-login and register form with name field acts strange. Validation doesnt work well
+-logout doesnt work very fast.
++header navbar in mobile work is bugged
+feature to do (optional):
+-add filters and search tools to look for tests
+-add rating of the tests
+feature_must_have:
+-add notifications that something is happening when user send data.
++-?add error handling on client side
++add profile component. TO edit tests and delete them.
++add feature to add to favourites.
+-add feature to add comments
+planned features for mvp:
++add construction of tests. And test controller
++add creating solutions feature to the frontend part. And display the number how many times test was passed.
++add ability to ban and promote users. Bans equals not able to make comments and tests.
++add f0eedback form
++-? add control of image. Automatic deletion of them
++-?add email verification
++add automatic pagination contol. (scrolling)
