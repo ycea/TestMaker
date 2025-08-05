@@ -1,11 +1,70 @@
-@import 'tailwindcss';
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+main {
+    background-color: #e7eaef;
+}
+/* Общие стили */
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+p {
+    color: #3e8165;
+    margin: 8px;
+}
+footer p {
+    color: #1e3a3a;
+    margin: 5px;
+}
+i {
+    margin: 3px;
+    pointer-events: none;
+}
+img {
+    margin: 4px;
+}
+.form-wrapper {
+    background-color: aliceblue;
+    border: outset black 1px;
+}
+/* Заголовок */
+header {
+    background-color: #217074;
+}
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+.nav-item {
+    white-space: nowrap;
+}
+/* Форма поиска */
+.question-background {
+    background-color: azure;
+}
+.question-background:hover {
+    background-color: aqua;
+}
+
+.profile-color {
+    background-color: beige;
+}
+.form-group label {
+    color: #2f4f4f;
+}
+
+button {
+    background-color: #e7eaef;
+}
+
+button:hover {
+    background-color: #1e3a3a;
+}
+
+/* Подвал */
+footer {
+    background-color: azure;
+}
+
+@media (max-width: 768px) {
+    .w-75-mobile {
+        width: 100% !important;
+    }
 }

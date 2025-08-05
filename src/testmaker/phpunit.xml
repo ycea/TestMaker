@@ -5,12 +5,19 @@
          colors="true"
 >
     <testsuites>
-        <testsuite name="Unit">
-            <directory>tests/Unit</directory>
+        <testsuite name="Storage">
+            <directory suffix="Test.php">./tests/Storage</directory>
         </testsuite>
         <testsuite name="Feature">
-            <directory>tests/Feature</directory>
+            <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
+        <testsuite name="Controllers">
+            <directory suffix="Test.php">./tests/ControllerTests</directory>
+        </testsuite>
+        <testsuite name="Commands">
+            <directory suffix="Test.php">./tests/Commands </directory>
+        </testsuite>
+
     </testsuites>
     <source>
         <include>
@@ -22,8 +29,8 @@
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="CACHE_STORE" value="array"/>
-        <env name="DB_CONNECTION" value="sqlite"/>
-        <env name="DB_DATABASE" value=":memory:"/>
+        <!--<env name="DB_CONNECTION" value="sqlite"/>-->
+         <!--<env name="DB_DATABASE" value=":memory:"/>-->
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
