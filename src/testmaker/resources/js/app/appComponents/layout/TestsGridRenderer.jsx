@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import useInfiniteScroll from "../Helpers/useInfiniteScroll";
 const TestsGridRenderer = ({ endpointPrefix, loadListEndPoint }) => {
     const divLoader = useRef();
-    const isLoadingData = useRef(false);
     const [finishedLoading, setFinish] = useState(false);
     const [tests, changeListTests] = useState([]);
     const currentPage = useRef(1);
@@ -12,8 +11,7 @@ const TestsGridRenderer = ({ endpointPrefix, loadListEndPoint }) => {
         return <div>Произошла ошибка компонента. Скоро её починят</div>;
     }
     const loadTests = () => {
-        if (isLoadingData.current && !finishedLoading) return;
-        isLoadingData.current = true;
+        if (!finishedLoading) return;
         axios
             .get(loadListEndPoint, { params: { page: currentPage.current } })
             .then((response) => {
@@ -27,9 +25,6 @@ const TestsGridRenderer = ({ endpointPrefix, loadListEndPoint }) => {
             .catch((error) => {
                 console.error("ERROR TO LOAD DATA", error);
                 alert("Не получилось загрузить тесты");
-            })
-            .finally(() => {
-                isLoadingData.current = false;
             });
     };
     useInfiniteScroll({

@@ -1,25 +1,31 @@
 import axios from "axios";
 import { useRef, useState } from "react";
 import translateRole, { UserRoleEnum } from "../Enums/UserRoleEnum";
-import SearchBar from "../layout/SearchBar";
 import useInfiniteScroll from "../Helpers/useInfiniteScroll";
 import useLockLogic from "../Helpers/useLockLogic";
 import { formatDate } from "../Helpers/UserHelpers";
+import SearchBar from "../layout/SearchBar";
 const AdminPanel = () => {
     const [users, changeUsers] = useState([]);
     const { isLocked, setLock } = useLockLogic();
     const [isGivingBan, settingBan] = useState(false);
     const [isFinished, setFinish] = useState(false);
     const divLoader = useRef();
+    const currentPage = useRef(1);
+
     const loadUsers = () => {
         axios
-            .get("/api/users/", { withCredentials: true })
+            .get("/api/users/", {
+                params: { page: currentPage.current },
+                withCredentials: true,
+            })
             .then((response) => {
                 if (response.data.data.length == 0) {
                     setFinish(true);
                     return;
                 }
-                changeUsers(response.data.data);
+                currentPage.current += 1;
+                changeUsers((prev) => [...prev, ...response.data.data]);
             })
             .catch((error) => {
                 console.error("FAILED TO LOAD USERS", error);

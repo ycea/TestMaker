@@ -6,23 +6,25 @@ import EditUI from "./EditUI";
 import TestHelper from "./TestHelper";
 import useImageHook from "./useImageHook";
 const TestMaker = () => {
-    const [test, changeTestData] = useState(initializeTest);
+    const [test, changeTestData] = useState(
+        (() => {
+            const test = TestHelper.getTestFromStorage();
+            if (test.questions.length === 0) {
+                test.questions.push({
+                    id: crypto.randomUUID(),
+                    title: "",
+                    order: 1,
+                    content: [],
+                });
+            }
+            return test;
+        })()
+    );
     const { translateBackendStatus, backendErrors } = useErrorHandler();
     const { chaneImage, uploadImage } = useImageHook();
     /* test structure  { test_data:{ name: "", image_href:"",description:""},
         questions: [{id: 1,title:"",order:1 content: [{choice_id:1, choice: "", is_correct: false } }] }*/
-    function initializeTest() {
-        const test = TestHelper.getTestFromStorage();
-        if (test.questions.length === 0) {
-            test.questions.push({
-                id: crypto.randomUUID(),
-                title: "",
-                order: 1,
-                content: [],
-            });
-        }
-        return test;
-    }
+    function initializeTest() {}
 
     const saveTest = (e, toPublish = false) => {
         e.preventDefault();

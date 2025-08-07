@@ -28,7 +28,9 @@ class UserController extends Controller
             $user->sendEmailVerificationNotification();
         } catch (\Throwable $e) {
             User::where(['name' => $user->name])->delete();
-            abort(500);
+            Log::error($e);
+            Log::info("----");
+            return response()->json(status: 500);
         }
         return response()->json();
     }
