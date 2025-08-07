@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 import UserContext from "../../UserContext";
 import translateStatus from "../Enums/TestStatuses";
 import useLockLogic from "../Helpers/useLockLogic";
@@ -65,7 +66,7 @@ const EditUI = ({
         });
     }
     function addQuestion() {
-        const new_id = crypto.randomUUID();
+        const new_id = uuidv4();
         changeTestData((prev) => {
             const currentArray = Array.isArray(prev.questions)
                 ? prev.questions

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { TestStatusEnum } from "../Enums/TestStatuses";
 import useErrorHandler from "../Helpers/useErrorHandler";
 import EditUI from "./EditUI";
@@ -11,12 +12,13 @@ const TestMaker = () => {
             const test = TestHelper.getTestFromStorage();
             if (test.questions.length === 0) {
                 test.questions.push({
-                    id: crypto.randomUUID(),
+                    id: uuidv4(),
                     title: "",
                     order: 1,
                     content: [],
                 });
             }
+
             return test;
         })()
     );
@@ -24,11 +26,10 @@ const TestMaker = () => {
     const { chaneImage, uploadImage } = useImageHook();
     /* test structure  { test_data:{ name: "", image_href:"",description:""},
         questions: [{id: 1,title:"",order:1 content: [{choice_id:1, choice: "", is_correct: false } }] }*/
-    function initializeTest() {}
 
     const saveTest = (e, toPublish = false) => {
         e.preventDefault();
-        let id = crypto.randomUUID();
+        let id = uuidv4();
         axios
             .post(
                 "/api/tests",

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 const QUESTIONS_KEY = "test";
 function getTestFromStorage() {
     try {
@@ -26,11 +27,11 @@ const resetTest = (changeTestData) => {
         test_data: { name: "", image_href: null, description: "" },
         questions: [
             {
-                id: crypto.randomUUID(),
+                id: uuidv4(),
                 order: 1,
                 content: [
                     {
-                        choice_id: crypto.randomUUID(),
+                        choice_id: uuidv4(),
                         choice: "",
                         is_correct: false,
                     },

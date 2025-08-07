@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 import TestHelper from "./TestHelper";
 const Question = () => {
     const [question, changeQuestion] = useState();
@@ -64,7 +65,7 @@ const Question = () => {
     function addChoice(e) {
         let newContent = [
             ...question.content,
-            { choice_id: crypto.randomUUID(), choice: "", is_correct: false },
+            { choice_id: uuidv4(), choice: "", is_correct: false },
         ];
         changeQuestion((prev) => ({
             ...prev,
