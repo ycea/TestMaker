@@ -1,0 +1,9 @@
+{
+  "version": 999,
+  "scryptSalt": "959CUS/calU=",
+  "scryptCostParam": 32768,
+  "scryptBlockSize": 8,
+  "primaryMasterKey": "KeQKnDT588A7wBwPyV1F92JMPaH+z43O90uc0Q7FBYRF5iB91M8Mwg==",
+  "hmacMasterKey": "CjX4uCf/Zc+m6X8LMhObLZ75Vu5rMTzHXRONl/S7cpsas/KJHsYlFg==",
+  "versionMac": "+kqTDbRN4qicoKjzn02zafMO5oN7WcX0t/4z03ATtyk="
+}
