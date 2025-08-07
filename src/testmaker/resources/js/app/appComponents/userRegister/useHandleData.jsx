@@ -12,6 +12,7 @@ const useHandleData = ({
     postProcess = null,
 }) => {
     const [submitStatus, setSubmitStatus] = useState({
+        isSucces: false,
         isSubmitted: false,
         text: "Ваши данные отправляются",
     });
@@ -25,8 +26,8 @@ const useHandleData = ({
             [name]: value,
         }));
         const currentForm = { ...formData, [name]: value };
-        setSubmitStatus({ isSubmitted: false, message: "" });
-        checkIsValid(currentForm);
+        setSubmitStatus({ isSucces: false, isSubmitted: false, message: "" });
+        return checkIsValid(currentForm);
     }
     function handleSubmit(e) {
         e.preventDefault();
@@ -48,15 +49,18 @@ const useHandleData = ({
                     setSubmitStatus((prev) => ({
                         ...prev,
                         message: succesMessage,
+                        isSucces: true,
                     }));
                     postProcess?.(response);
                 })
                 .catch((err) => {
                     translateBackendStatus(err);
-                    setSubmitStatus({
-                        message: "Данные отправляются, подождите",
-                        isSubmitted: false,
-                    });
+                    setSubmitStatus((prev) => ({
+                        ...prev,
+                        message:
+                            "Не удалось отправить данные. Попробуйте позже",
+                        isSucces: false,
+                    }));
                 });
             setFormData(defaultForm);
         }

@@ -10,13 +10,14 @@ class MailController extends Controller
 {
     public function sendFeedBack(Request $request)
     {
-        $this->validate($request, [
+        $request->validate([
             "email" => "required|email",
-            "name" => "required|regex:/^[a-zA-Z0-9]{4,}$/"
+            "name" => "required|regex:/^[a-zA-Z0-9]{4,}$/",
+            "message" => "required|min:10",
         ]);
         $data = ['email' => $request->email, 'name' => $request->name, "message" => $request->message];
 
-        Mail::to("rsavinov436@gmail.com")->send(new FeedbackMail($data));
+        Mail::to(env("FEEDBACK_MAIL"))->send(new FeedbackMail($data));
         return back()->with('success', 'Сообщение отправлено!');
     }
 }

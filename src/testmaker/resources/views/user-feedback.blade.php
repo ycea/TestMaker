@@ -39,6 +39,7 @@
 <body>
     <div class="w-75 mx-auto text-center p-1" style="background-color: azure">
         <h1 class="m-1">Письмо от: {{$data['name']}}</h1>
+        <h4 class="m-1"> Адрес почты: {{ $data['email'] }}</h4>
         <hr />
 
         <p>{{ $data['message'] }}</p>
