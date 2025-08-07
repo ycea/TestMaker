@@ -24,8 +24,12 @@ class UserController extends Controller
         ]);
         $user = User::create(['email' => $request->input("email"), 'name' => $request->input("name"), 'password' => $request->input('password')]);
         Auth::login($user);
-        $user->sendEmailVerificationNotification();
-
+        try {
+            $user->sendEmailVerificationNotification();
+        } catch (\Throwable $e) {
+            User::where(['name' => $user->name])->delete();
+            abort(500);
+        }
         return response()->json();
     }
 
