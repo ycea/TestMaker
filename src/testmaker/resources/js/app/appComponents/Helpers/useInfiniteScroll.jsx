@@ -1,21 +1,13 @@
-import { useEffect, useRef } from "react";
-const useInfiniteScroll = ({ targetRef, onIntersect, enabled }) => {
-    const isLoadingData = useRef(false);
-
+import { useEffect } from "react";
+const useInfiniteScroll = ({ targetRef, onIntersect, isFinished }) => {
     useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
-                if (
-                    entry.isIntersecting &&
-                    !enabled &&
-                    !isLoadingData.current
-                ) {
-                    isLoadingData.current = true;
+                if (entry.isIntersecting && !isFinished) {
                     onIntersect?.();
-                    isLoadingData.current = false;
                 }
             },
-            { root: null, rootMargin: "0px", threshold: 0.8 }
+            { root: null, rootMargin: "0px", threshold: 0.1 }
         );
         const element = targetRef.current;
         if (element) {

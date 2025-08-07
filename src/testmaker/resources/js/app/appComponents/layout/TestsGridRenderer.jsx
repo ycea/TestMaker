@@ -7,11 +7,7 @@ const TestsGridRenderer = ({ endpointPrefix, loadListEndPoint }) => {
     const [finishedLoading, setFinish] = useState(false);
     const [tests, changeListTests] = useState([]);
     const currentPage = useRef(1);
-    if (endpointPrefix == null || loadListEndPoint == null) {
-        return <div>Произошла ошибка компонента. Скоро её починят</div>;
-    }
     const loadTests = () => {
-        if (!finishedLoading) return;
         axios
             .get(loadListEndPoint, { params: { page: currentPage.current } })
             .then((response) => {
@@ -30,7 +26,7 @@ const TestsGridRenderer = ({ endpointPrefix, loadListEndPoint }) => {
     useInfiniteScroll({
         targetRef: divLoader,
         onIntersect: loadTests,
-        enabled: finishedLoading,
+        isFinished: finishedLoading,
     });
     if (!tests) {
         return <div>Идет загрузка тестов</div>;

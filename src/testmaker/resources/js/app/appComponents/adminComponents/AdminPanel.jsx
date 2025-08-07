@@ -34,7 +34,7 @@ const AdminPanel = () => {
     useInfiniteScroll({
         targetRef: divLoader,
         onIntersect: loadUsers,
-        enabled: isFinished,
+        isFinished: isFinished,
     });
 
     if (!users) {

@@ -23,7 +23,7 @@ const TestMaker = () => {
         })()
     );
     const { translateBackendStatus, backendErrors } = useErrorHandler();
-    const { chaneImage, uploadImage } = useImageHook();
+    const { changeImage, uploadImage } = useImageHook();
     /* test structure  { test_data:{ name: "", image_href:"",description:""},
         questions: [{id: 1,title:"",order:1 content: [{choice_id:1, choice: "", is_correct: false } }] }*/
 
@@ -58,7 +58,7 @@ const TestMaker = () => {
             changeTestData={changeTestData}
             saveTest={saveTest}
             backendErrors={backendErrors}
-            changeImageData={chaneImage}
+            changeImageData={changeImage}
         ></EditUI>
     );
 };

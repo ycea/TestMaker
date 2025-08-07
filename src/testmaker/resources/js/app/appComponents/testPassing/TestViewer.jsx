@@ -21,11 +21,15 @@ const TestViewer = ({
     const [correctAnswers, setCorrectAnswers] = useState(null);
     const navigate = useNavigate();
     const isSelectedChoice = (question_id, choice_id) => {
-        for (var answer of answers) {
-            if (answer.question_id == question_id) {
-                return answer.chosen_ids.includes(choice_id);
+        if (answers != null) {
+            for (var answer of answers) {
+                if (answer.question_id == question_id) {
+                    return answer.chosen_ids.includes(choice_id);
+                }
             }
         }
+
+        return false;
     };
     if (activeIndex === 0) {
         return (
@@ -172,7 +176,7 @@ const TestViewer = ({
                                 className="mx-2 btn btn-success"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    setCorrectAnswers(null);
+                                    setCorrectAnswers?.(null);
                                     changeAnswers((prev) => {
                                         const updated = {
                                             ...prev,
@@ -216,7 +220,11 @@ const TestViewer = ({
                         type="checkbox"
                         className="form-check-input mx-2"
                         onChange={(e) => {
-                            rememberAnswers(
+                            if (rememberAnswers === null) {
+                                alert("Это только для предпросмотра");
+                                return;
+                            }
+                            rememberAnswers?.(
                                 activeQuestion.id,
                                 choice.choice_id,
                                 e.target.checked
@@ -224,7 +232,7 @@ const TestViewer = ({
                         }}
                         checked={
                             choice.is_correct ||
-                            isSelectedChoice(
+                            isSelectedChoice?.(
                                 activeQuestion.id,
                                 choice.choice_id
                             )
@@ -237,7 +245,8 @@ const TestViewer = ({
                 <button
                     className="btn btn-secondary m-2"
                     onClick={() => {
-                        if (activeIndex - 1 >= 0) toggleIndex(activeIndex - 1);
+                        if (activeIndex - 1 >= 0)
+                            toggleIndex?.(activeIndex - 1);
                         else console.log("Выходим за пределы массива");
                     }}
                 >
@@ -251,7 +260,7 @@ const TestViewer = ({
                             (submitAnswers &&
                                 activeIndex <= test.questions.length)
                         )
-                            toggleIndex(activeIndex + 1);
+                            toggleIndex?.(activeIndex + 1);
                         else console.log("Выходим за пределы массива");
                     }}
                 >

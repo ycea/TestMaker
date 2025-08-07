@@ -12,7 +12,7 @@ const TestEditor = () => {
     const navigate = useNavigate();
     const { user } = useContext(UserContext);
     const [test, changeTestData] = useState(null);
-    const { chaneImage, uploadImage } = useImageHook();
+    const { changeImage, uploadImage } = useImageHook();
     const { translateBackendStatus, backendErrors } = useErrorHandler();
     useEffect(() => {
         TestHelper.getTestFromServer(id, false)
@@ -73,7 +73,7 @@ const TestEditor = () => {
             saveTest={updateTest}
             dropTest={dropTest}
             backendErrors={backendErrors}
-            changeImageData={chaneImage}
+            changeImageData={changeImage}
         ></EditUI>
     );
 };

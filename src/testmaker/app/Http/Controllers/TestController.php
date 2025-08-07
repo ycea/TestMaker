@@ -208,7 +208,6 @@ class TestController extends Controller
             'test_data.name' => 'required|min:3|max:40',
             'test_data.description' => 'required|max:200',
             'questions' => 'array|required|min:1',
-            'test_data.image_href' => 'nullable|regex:/^(?!https?:\/\/)[\/a-zA-Z0-9_\-\.]+$/',
             'status' => 'in:' . TestStatusEnum::IsPending . ',' . TestStatusEnum::IsEdited,
         ];
 
