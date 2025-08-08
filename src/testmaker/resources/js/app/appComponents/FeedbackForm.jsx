@@ -1,7 +1,10 @@
 import { useContext, useState } from "react";
 import UserContext from "../UserContext";
 import useHandleData from "./userRegister/useHandleData";
+
 const FeedbackForm = () => {
+    const recaptchaRef = useRef(null);
+
     const { user } = useContext(UserContext);
     const [messageForm, setFormMessage] = useState({
         name: user.name,
@@ -23,7 +26,12 @@ const FeedbackForm = () => {
             message: "",
         },
     });
-
+    const onReCAPTCHAChange = (token) => {
+        setRecaptchaToken(token);
+    };
+    const postProcess = () => {
+        recaptchaRef.current.reset();
+    };
     return (
         <div className="d-flex flex-column justify-content-center align-items-center flex-grow-1">
             <form className="w-75 border border-outline bg-light px-1 py-2 text-center">
@@ -43,7 +51,16 @@ const FeedbackForm = () => {
                             }
                         }}
                     ></textarea>
+                    <div
+                        class="g-recaptcha"
+                        data-sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                    ></div>
                 </div>{" "}
+                <ReCAPTCHA
+                    sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                    onChange={onReCAPTCHAChange}
+                    ref={recaptchaRef}
+                />
                 <button
                     className="btn btn-success "
                     onClick={(e) => {

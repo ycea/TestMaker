@@ -23,7 +23,7 @@ class UserControllerTest extends TestCase
     }
     public function test_inserting_user()
     {
-        $response = $this->postJson("/api/register-user", ["name" => "Dave", "email" => "r@gmail.com", "password" => "123f2f12!3.fА3"]);
+        $response = $this->postJson("/api/register-user", ["name" => "Dave", "email" => "r@gmail.com", "password" => "123f2f12!3.fА3","g_recaptcha_response"=>]);
         $response->assertStatus(200);
         $user = User::where('name', 'Dave')->firstOrFail();
         $this->assertEquals('Dave', $user->name);

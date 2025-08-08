@@ -25,14 +25,33 @@ class UserController extends Controller
         $user = User::create(['email' => $request->input("email"), 'name' => $request->input("name"), 'password' => $request->input('password')]);
         Auth::login($user);
         try {
-            $user->sendEmailVerificationNotification();
+            $secretKey = env("SITE_SECRET_KEY");
+            $recaptchaToken = $request->input("g_recaptcha_response");
+
+            $ch = curl_init("https://www.google.com/recaptcha/api/siteverify");
+            curl_setopt($ch, CURLOPT_POST, true); // Метод POST
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+                'secret' => $secretKey,
+                'response' => $recaptchaToken
+            ]));
+
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Чтобы получить результат как строку
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            $response = curl_exec($ch);
+            curl_close($ch);
+            $result = json_decode($response, true);
+            if (isset($result) && $result['success']) {
+                $user->sendEmailVerificationNotification();
+                return response()->json(status: 200);
+            }
         } catch (\Throwable $e) {
             User::where(['name' => $user->name])->delete();
             Log::error($e);
             Log::info("----");
             return response()->json(status: 500);
         }
-        return response()->json();
+        return response()->json(status: 422);
     }
 
     public function loginUser(Request $request)

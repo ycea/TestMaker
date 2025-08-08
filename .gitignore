@@ -1,1 +1,3 @@
 docker/.env
+src/.env.production
+src/.env

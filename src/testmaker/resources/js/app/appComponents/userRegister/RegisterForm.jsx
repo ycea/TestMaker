@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import { Link } from "react-router-dom";
 import useHandleData from "./useHandleData";
 import useUserLogic from "./useUserLogic";
 const RegisterForm = () => {
+    const recaptchaRef = useRef(null);
+    const [recaptchaToken, setRecaptchaToken] = useState("");
     const [passwordShown, setVisibilityPassword] = useState(false);
     const { validateEmail, validateName, validatePassword, verifyPassword } =
         useUserLogic();
@@ -11,6 +14,7 @@ const RegisterForm = () => {
         email: "",
         password: "",
         passwordVerify: "",
+        g_recaptcha_response: "",
     };
     const [formData, setFormData] = useState(defaultForm);
     const checkIsValid = (currentForm) => {
@@ -23,9 +27,13 @@ const RegisterForm = () => {
                 currentForm.passwordVerify
             ),
         };
+
         const noErrors = Object.values(errors).every((value) => value == "");
 
         setIsValid(errors);
+        if (!recaptchaToken) {
+            return false;
+        }
         return noErrors;
     };
     const [validationErrors, setIsValid] = useState({
@@ -34,22 +42,33 @@ const RegisterForm = () => {
         passwordError: "",
         passwordVerifyError: "",
     });
+    const postProcess = () => {
+        recaptchaRef.current.reset();
+    };
     const { submitStatus, handleChange, handleSubmit, backendErrors } =
         useHandleData({
             endPointSubmit: "/api/register-user",
-            formData,
+            formData: { ...formData, g_recaptcha_response: recaptchaToken },
             setFormData,
             checkIsValid,
             defaultForm,
             succesMessage:
                 "Данные успешно отправились, проверьте почту (включая спам)",
+            postProcess: postProcess,
         });
+    const onReCAPTCHAChange = (token) => {
+        setRecaptchaToken(token);
+    };
 
     return (
         <div className="d-flex justify-content-center align-items-center flex-grow-1">
             <div className="d-flex m-1 flex-column form-wrapper  p-5 ">
                 <h1 className="mb-5">Форма регистрации</h1>
-                <form className="d-flex flex-column" onSubmit={handleSubmit}>
+                <form
+                    id="form-id"
+                    className="d-flex flex-column"
+                    onSubmit={handleSubmit}
+                >
                     <label className="form-label">
                         Придумайте имя для отображения
                     </label>
@@ -126,7 +145,11 @@ const RegisterForm = () => {
                             {validationErrors.passwordVerifyError}
                         </div>
                     )}
-
+                    <ReCAPTCHA
+                        sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
+                        onChange={onReCAPTCHAChange}
+                        ref={recaptchaRef}
+                    />
                     <button type="submit" className="btn btn-primary my-1">
                         {" "}
                         Зарегистрироваться
