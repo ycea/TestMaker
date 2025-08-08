@@ -31,7 +31,6 @@ const EditUI = ({
         }
     }, [previewOfImage]);
     const resetImage = () => {
-        console.log("IMAGE RESETER CALLED", previewOfImage);
         if (previewOfImage) {
             setUserImageContent(Date.now());
             URL.revokeObjectURL(previewOfImage);

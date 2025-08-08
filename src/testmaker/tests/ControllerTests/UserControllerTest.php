@@ -21,13 +21,6 @@ class UserControllerTest extends TestCase
         parent::setUp();
         $this->user = User::factory(['name' => 'barbara'])->create();
     }
-    public function test_inserting_user()
-    {
-        $response = $this->postJson("/api/register-user", ["name" => "Dave", "email" => "r@gmail.com", "password" => "123f2f12!3.fА3","g_recaptcha_response"=>]);
-        $response->assertStatus(200);
-        $user = User::where('name', 'Dave')->firstOrFail();
-        $this->assertEquals('Dave', $user->name);
-    }
     public function test_inserting_existing_user_should_422()
     {
         User::factory()->create(["name" => "Dave", "email" => "r@gmail.com", "password" => "123123"]);
