@@ -169,10 +169,16 @@ const Question = () => {
                         </div>
                     ))}
                 </div>
-                <button className="btn btn-primary mx-3" onClick={addChoice}>
+                <button
+                    className="btn btn-primary my-1 mx-3"
+                    onClick={addChoice}
+                >
                     Добавить вариант ответа
                 </button>
-                <button className="btn btn-success mx-3" onClick={saveQuestion}>
+                <button
+                    className="btn btn-success my-1 mx-3"
+                    onClick={saveQuestion}
+                >
                     Сохранить вопрос
                 </button>
             </div>

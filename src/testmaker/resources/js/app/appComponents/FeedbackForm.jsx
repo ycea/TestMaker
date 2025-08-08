@@ -1,23 +1,28 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 import UserContext from "../UserContext";
 import useHandleData from "./userRegister/useHandleData";
-
 const FeedbackForm = () => {
     const recaptchaRef = useRef(null);
+    const [recaptchaToken, setRecaptchaToken] = useState(null);
 
     const { user } = useContext(UserContext);
     const [messageForm, setFormMessage] = useState({
         name: user.name,
         email: user.email,
         message: "",
+        g_recaptcha_response: "",
     });
     const [isValid, setIsValid] = useState(true);
     const checkIsValid = (form) => {
-        return form.message.length >= 10;
+        return form.message.length >= 10 && recaptchaToken != null;
+    };
+    const postProcess = () => {
+        recaptchaRef.current.reset();
     };
     const { handleSubmit, handleChange, submitStatus } = useHandleData({
         endPointSubmit: "/api/send-feedback",
-        formData: messageForm,
+        formData: { ...messageForm, g_recaptcha_response: recaptchaToken },
         setFormData: setFormMessage,
         checkIsValid: checkIsValid,
         defaultForm: {
@@ -25,13 +30,13 @@ const FeedbackForm = () => {
             email: user.email,
             message: "",
         },
+        postProcess: postProcess,
     });
+
     const onReCAPTCHAChange = (token) => {
         setRecaptchaToken(token);
     };
-    const postProcess = () => {
-        recaptchaRef.current.reset();
-    };
+
     return (
         <div className="d-flex flex-column justify-content-center align-items-center flex-grow-1">
             <form className="w-75 border border-outline bg-light px-1 py-2 text-center">
@@ -51,12 +56,9 @@ const FeedbackForm = () => {
                             }
                         }}
                     ></textarea>
-                    <div
-                        class="g-recaptcha"
-                        data-sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-                    ></div>
                 </div>{" "}
                 <ReCAPTCHA
+                    className="d-flex justify-content-center"
                     sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
                     onChange={onReCAPTCHAChange}
                     ref={recaptchaRef}
