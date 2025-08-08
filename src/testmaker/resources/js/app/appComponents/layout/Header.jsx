@@ -1,10 +1,41 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import UserContext from "../../UserContext";
 export const Header = () => {
     const { user } = useContext(UserContext);
+    const calculateTimeLeft = () => {
+        const now = new Date();
+        const difference = new Date(2025, 8, 5, 20) - now;
+
+        if (difference <= 0) {
+            return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+        }
+        const totalSeconds = Math.floor(difference / 1000);
+
+        return {
+            days: Math.floor(totalSeconds / (60 * 60 * 24)),
+            hours: Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60)),
+            minutes: Math.floor((totalSeconds % (60 * 60)) / 60),
+            seconds: totalSeconds % 60,
+        };
+    };
+    console.log(1);
+    const [timeLeft, setTimeLeft] = useState(calculateTimeLeft);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTimeLeft(calculateTimeLeft());
+        }, 1000);
+        return () => clearInterval(interval);
+    }, []);
     return (
         <header className="d-flex flex-row justify-content-between align-items-center py-3">
+            <div className="d-flex flex-column mx-3">
+                <ul className="list-unstyled ">
+                    <li>Дни: {timeLeft.days}</li>
+                    <li>Часы: {timeLeft.hours}</li>
+                    <li>Секунды: {timeLeft.seconds}</li>
+                </ul>
+            </div>
             <div className="d-flex flex-column container text-center ">
                 <h1 className="mb-1">TestLib</h1>
                 <h3 className="text-muted d-none d-sm-block fs-5">
